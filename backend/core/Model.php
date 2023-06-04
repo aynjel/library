@@ -10,7 +10,15 @@ class Model {
     }
 
     public function find($id){
-        return $this->db->get($this->table, [$this->primaryKey, '=', $id])->first();
+        return $this->db->query("SELECT * FROM {$this->table} WHERE {$this->primaryKey} = ?", [$id])->first();
+    }
+
+    public function findByStudentId($id){
+        return $this->db->query("SELECT * FROM {$this->table} WHERE student_id = ?", [$id])->first();
+    }
+
+    public function findByLibReqID($id){
+        return $this->db->query("SELECT * FROM {$this->table} WHERE library_req_id = ?", [$id])->first();
     }
     
     public function findAll(){

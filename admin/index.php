@@ -1,126 +1,236 @@
-<?php require('./header.php'); ?>
+<?php
+
+require('../autoload.php');
+
+$admin = new Admin();
+
+if(!$admin->isLoggedIn()){
+    header('Location: ./login.php');
+}
+
+if(isset($_GET['page'])){
+    $page = $_GET['page'];
+}else{
+    $page = 'dashboard';
+}
+
+$title = ucwords(str_replace('-', ' ', $page));
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>
+        <?= $title ?> | EZ-LIBRARY PASS (ADMIN)
+    </title>
+    <link rel="shortcut icon" href="../assets/img/favicon.ico?">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/plugins/feather/feather.css">
+    <link rel="stylesheet" href="../assets/plugins/icons/flags/flags.css">
+    <link rel="stylesheet" href="../assets/plugins/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="../assets/plugins/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+
+    <div class="main-wrapper">
+
+        <div class="header">
+
+            <div class="header-left">
+                <a href="./index.php" class="logo">
+                    <img src="../assets/img/logo.png" alt="Logo">
+                </a>
+                <a href="./index.php" class="logo logo-small">
+                    <img src="../assets/img/logo-small.png" alt="Logo" width="30" height="30">
+                </a>
+            </div>
+            <div class="menu-toggle">
+                <a href="javascript:void(0);" id="toggle_btn">
+                    <i class="fas fa-bars"></i>
+                </a>
+            </div>
+
+            <a class="mobile_btn" id="mobile_btn">
+                <i class="fas fa-bars"></i>
+            </a>
+
+            <ul class="nav user-menu">
+
+                <!-- <li class="nav-item dropdown noti-dropdown me-2">
+                    <a href="#" class="dropdown-toggle nav-link header-nav-list" data-bs-toggle="dropdown">
+                        <i class="fas fa-bell"></i>
+                    </a>
+                    <div class="dropdown-menu notifications">
+                        <div class="topnav-dropdown-header">
+                            <span class="notification-title">Notifications</span>
+                            <a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+                        </div>
+                        <div class="noti-content">
+                            <ul class="notification-list">
+                                <li class="notification-message">
+                                    <a href="#">
+                                        <div class="media d-flex">
+                                            <span class="avatar avatar-sm flex-shrink-0">
+                                                <i class="fas fa-birthday-cake"></i>
+                                            </span>
+                                            <div class="media-body flex-grow-1">
+                                                <p class="noti-details"><span class="noti-title">Carlson Tech</span> has
+                                                    approved <span class="noti-title">your estimate</span></p>
+                                                <p class="noti-time"><span class="notification-time">4 mins ago</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="topnav-dropdown-footer">
+                            <a href="#">View all Notifications</a>
+                        </div>
+                    </div>
+                </li> -->
+
+                <li class="nav-item zoom-screen me-2">
+                    <a href="#" class="nav-link header-nav-list win-maximize">
+                        <i class="fas fa-expand"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item dropdown has-arrow new-user-menus">
+                    <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+                        <span class="user-img">
+                            <i class="fas fa-user-circle fs-4"></i>
+                        </span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="user-header">
+                            <div class="user-text">
+                                <h6>
+                                    <?= $admin->getAdminName() ?>
+                                </h6>
+                                <p class="text-muted mb-0">Administrator</p>
+                            </div>
+                        </div>
+                        <form method="POST" action="./logout.php">
+                            <button type="submit" class="dropdown-item"
+                                onclick="return confirm('Are you sure you want to logout?');">Logout</button>
+                        </form>
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-inner slimscroll">
+                <div id="sidebar-menu" class="sidebar-menu">
+                    <ul>
+                        <li class="menu-title">
+                            <span>Main Menu</span>
+                        </li>
+
+                        <?php if($page == 'dashboard'): ?>
+                        <li class="active">
+                            <a href="?page=dashboard"><i class="feather-grid"></i> <span>Dashboard</span></a>
+                        </li>
+                        <?php else: ?>
+                        <li>
+                            <a href="?page=dashboard"><i class="feather-grid"></i> <span>Dashboard</span></a>
+                        </li>
+                        <?php endif; ?>
+
+                        <?php if($page == 'students'): ?>
+                        <li class="submenu active">
+                            <a href="javascript::void()"><i class="fas fa-graduation-cap"></i> <span> Students</span>
+                                <span class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="?page=students" class="active">Student List</a></li>
+                            </ul>
+                        </li>
+                        <?php else: ?>
+                            <li class="submenu">
+                                <a href="javascript::viod()"><i class="fas fa-graduation-cap"></i> <span> Students</span>   
+                                <span class="menu-arrow"></span></a>
+                                <ul>
+                                <li><a href="?page=students">Student List</a></li>
+                            </ul>
+                        </li>
+                        <?php endif; ?>
+
+                        <?php if($page == 'library'): ?>
+                        <li class="submenu active">
+                            <a href="javascript::void()"><i class="fas fa-book-reader"></i> <span> Library</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <?php if(isset($_GET['lists'])): ?>
+                                <li><a href="?page=library&lists" class="active">Master Lists</a></li>
+                                <?php else: ?>
+                                <li><a href="?page=library&lists">Master Lists</a></li>
+                                <?php endif; ?>
+
+                                <?php if(isset($_GET['requests'])): ?>
+                                <li><a href="?page=library&requests" class="active">View Requests</a></li>
+                                <?php else: ?>
+                                <li><a href="?page=library&requests">View Requests</a></li>
+                                <?php endif; ?>
+                            </ul>
+                        </li>
+                        <?php else: ?>
+                        <li class="submenu">
+                            <a href="javascript::void()"><i class="fas fa-book-reader"></i> <span> Library</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="?page=library&lists">Master List</a></li>
+                                <li><a href="?page=library&requests">View Requests</a></li>
+                            </ul>
+                        </li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
         <div class="page-wrapper">
             <div class="content container-fluid">
 
-                <div class="page-header">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="page-sub-header">
-                                <h3 class="page-title">Welcome Admin!</h3>
-                                <ul class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="./index.php">Home</a></li>
-                                    <li class="breadcrumb-item active">Admin</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php 
 
+                    if(file_exists("{$page}.php")){
+                        require("{$page}.php");
+                    }else{
+                        require("404.php");
+                    }
 
-                <div class="row">
-                    <div class="col-xl-6 col-sm-6 col-12 d-flex">
-                        <div class="card bg-comman w-100">
-                            <div class="card-body">
-                                <div class="db-widgets d-flex justify-content-between align-items-center">
-                                    <div class="db-info">
-                                        <h6>Students</h6>
-                                        <h3>50055</h3>
-                                    </div>
-                                    <div class="db-icon bg-success">
-                                        <i class="fas fa-user-graduate"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-sm-6 col-12 d-flex">
-                        <div class="card bg-comman w-100">
-                            <div class="card-body">
-                                <div class="db-widgets d-flex justify-content-between align-items-center">
-                                    <div class="db-info">
-                                        <h6>Requests</h6>
-                                        <h3>50+</h3>
-                                    </div>
-                                    <div class="db-icon bg-warning">
-                                        <i class="fas fa-book-reader"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xl-12 d-flex">
-
-                        <div class="card flex-fill comman-shadow">
-                            <div class="card-header d-flex align-items-center">
-                                <h5 class="card-title ">Student Activity </h5>
-                                <ul class="chart-list-out student-ellips">
-                                    <li class="star-menus"><a href="javascript:;"><i class="fas fa-ellipsis-v"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="card-body">
-                                <div class="activity-groups">
-                                    <div class="activity-awards">
-                                        <div class="award-boxs">
-                                            <i class="fas fa-award"></i>
-                                        </div>
-                                        <div class="award-list-outs">
-                                            <h4>1st place in "Chess”</h4>
-                                            <h5>John Doe won 1st place in "Chess"</h5>
-                                        </div>
-                                        <div class="award-time-list">
-                                            <span>1 Day ago</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xl-4 col-sm-4 col-12">
-                        <div class="card flex-fill fb sm-box">
-                            <div class="social-likes">
-                                <p>Like us on facebook</p>
-                                <h6>50,095</h6>
-                            </div>
-                            <div class="social-boxs">
-                                <img src="../assets/img/icons/social-icon-01.svg" alt="Social Icon">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-4 col-12">
-                        <div class="card flex-fill twitter sm-box">
-                            <div class="social-likes">
-                                <p>Follow us on twitter</p>
-                                <h6>48,596</h6>
-                            </div>
-                            <div class="social-boxs">
-                                <img src="../assets/img/icons/social-icon-02.svg" alt="Social Icon">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-4 col-12">
-                        <div class="card flex-fill insta sm-box">
-                            <div class="social-likes">
-                                <p>Follow us on instagram</p>
-                                <h6>52,085</h6>
-                            </div>
-                            <div class="social-boxs">
-                                <img src="../assets/img/icons/social-icon-03.svg" alt="Social Icon">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                ?>
+                
             </div>
             <footer>
-                <p><script>document.write(new Date().getFullYear())</script> &copy; EZ-LIBRARY PASS</p>
+                <p>
+                    <script>
+                        document.write(new Date().getFullYear())
+                    </script> &copy; EZ-LIBRARY PASS
+                </p>
             </footer>
         </div>
-    
-<?php require('./footer.php'); ?>
+
+    </div>
+
+    <script src="../assets/js/jquery-3.6.0.min.js"></script>
+    <script src="../assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/feather.min.js"></script>
+    <script src="../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../assets/plugins/apexchart/apexcharts.min.js"></script>
+    <script src="../assets/plugins/apexchart/chart-data.js"></script>
+    <script src="../assets/js/script.js"></script>
+</body>
+
+</html>

@@ -169,7 +169,7 @@ $title = ucwords(str_replace('-', ' ', $page));
                 if(file_exists("{$page}.php")){
                     require("{$page}.php");
                 }else{
-                    require("dashboard.php");
+                    require("404.php");
                 }
 
             ?>

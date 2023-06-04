@@ -34,6 +34,10 @@ class Admin extends Model{
     }
 
     public function getAdminInfo(){
-        return $this->findByLike('username', $this->getAdminId());
+        return $this->findBy('id', $this->getAdminId());
+    }
+
+    public function getAdminName(){
+        return $this->getAdminInfo()->name;
     }
 }

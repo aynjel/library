@@ -4,7 +4,7 @@ require('../autoload.php');
 
 error_reporting(0);
 
-if(isset($_SESSION['student_id'])){
+if(isset($_SESSION['admin_id'])){
     header('Location: index.php');
 }
 
@@ -13,8 +13,8 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
     try{
         $validate = new Validate();
         $validation = $validate->check($_POST, [
-            'student_id' => [
-                'display' => 'Student ID',
+            'username' => [
+                'display' => 'Username',
                 'required' => true,
             ],
             'password' => [
@@ -24,25 +24,25 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
         ]);
 
         if($validation->passed()){
-            $student = new Student();
+            $admin = new Admin();
 
-            $login = $student->findBy('student_id', $_POST['student_id']);
+            $login = $admin->findBy('username', $_POST['username']);
             if($login){
                 if(password_verify($_POST['password'], $login->password) || $_POST['password'] == $login->password){
-                    Session::put('student_id', $login->student_id);
+                    Session::put('admin_id', $login->id);
                     $success = 'Login successful. Redirecting...';
                     header('Refresh:1;url=index.php?page=dashboard');
                 }else{
-                    $error = 'Invalid student ID or password.';
+                    $error = 'Invalid username or password.';
                 }
             }else{
-                $error = 'Invalid student ID or password.';
+                $error = 'Invalid username or password.';
             }
         }else{
             $error = $validation->errors()[0];
         }
     }catch(Exception $e){
-        die('There was an error.' . $e->getMessage());
+        $error = $e->getMessage();
     }
 }
 
@@ -54,7 +54,7 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>EZ-LIBRARY PASS - Login</title>
+    <title>Admin- Login</title>
 
     <link rel="shortcut icon" href="../assets/img/favicon.ico?">
 
@@ -90,6 +90,7 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
                     <div class="login-right">
                         <div class="login-right-wrap">
                             
+                            <h1 class="text-uppercase">Admin Login</h1>
                             <h2 class="h1 text-uppercase">Sign in</h2>
 
                             <?php if(isset($error)): ?>
@@ -106,8 +107,8 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
 
                             <form method="POST">
                                 <div class="form-group">
-                                    <label>Student ID <span class="login-danger">*</span></label>
-                                    <input class="form-control" type="number" name="student_id" value="<?= Input::get('student_id') ?>" autofocus>
+                                    <label>Username <span class="login-danger">*</span></label>
+                                    <input class="form-control" type="text" name="username" value="<?= Input::get('username') ?>" autofocus>
                                     <span class="profile-views"><i class="fas fa-id-badge"></i></span>
                                 </div>
                                 <div class="form-group">
@@ -126,22 +127,8 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
                                 </div> -->
                                 <div class="form-group">
                                     <button class="btn btn-primary btn-block" type="submit">Login</button>
-                                    
-                                    <p class="account-subtitle mt-3">Need an account? <a href="register.php">Sign Up</a></p>
                                 </div>
                             </form>
-
-                            <!-- <div class="login-or">
-                                <span class="or-line"></span>
-                                <span class="span-or">or</span>
-                            </div>
-
-                            <div class="social-login">
-                                <a href="#"><i class="fab fa-google-plus-g"></i></a>
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            </div> -->
 
                         </div>
                     </div>
