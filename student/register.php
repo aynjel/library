@@ -38,6 +38,10 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
                 'display' => 'Section',
                 'required' => false,
             ],
+            'course' => [
+                'display' => 'Course',
+                'required' => false,
+            ],
             'password' => [
                 'display' => 'Password',
                 'required' => true,
@@ -54,12 +58,13 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
 
             $register = $student->register([
                 'student_id' => $_POST['student_id'],
+                'password' => $_POST['password'],
                 'first_name' => $_POST['first_name'],
                 'middle_name' => $_POST['middle_name'],
                 'last_name' => $_POST['last_name'],
                 'year_level' => @$_POST['year_level'],
                 'section' => $_POST['section'],
-                'password' => $_POST['password'],
+                'course' => $_POST['course'],
             ]);
 
             if(!$register){
@@ -173,6 +178,19 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
                                             <label>Section</label>
                                             <input class="form-control" type="text" name="section" value="<?= Input::get('section') ?>">
                                             <span class="profile-views"><i class="fas fa-network-wired"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>Course</label>
+                                            <select name="course"class="form-control">
+                                                <option selected hidden disabled>Course</option>
+                                                <option value="BSIT">BSIT</option>
+                                                <option value="BSCS">BSCS</option>
+                                                <option value="BSIS">BSIS</option>
+                                                <option value="BSEMC">BSEMC</option>
+                                                <option value="BSECE">BSECE</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

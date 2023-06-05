@@ -1,12 +1,12 @@
 <?php
 
-// require('../autoload.php');
+require('../autoload.php');
 
-// $student = new Student();
+$student = new Student();
 
-// if(!$student->isLoggedIn()){
-//     header('Location: ./login.php');
-// }
+if(!$student->isLoggedIn()){
+    header('Location: ./login.php');
+}
 
 if(isset($_GET['page'])){
     $page = $_GET['page'];
@@ -77,10 +77,10 @@ $title = ucwords(str_replace('-', ' ', $page));
                             <i class="fas fa-user-circle fs-4"></i>
                             <div class="user-text">
                                 <h6>
-                                    Student Name
+                                    <?= $student->getStudentName() ?>
                                 </h6>
                                 <p class="text-muted mb-0">
-                                    123456
+                                    <?= $student->getStudentId() ?>
                                 </p>
                             </div>
                         </span>
@@ -89,15 +89,16 @@ $title = ucwords(str_replace('-', ' ', $page));
                         <div class="user-header">
                             <div class="user-text">
                                 <h6>
-                                    Student Name
+                                <?= $student->getStudentName() ?>
+
                                 </h6>
                                 <p class="text-muted mb-0">
-                                    123456
+                                <?= $student->getStudentId() ?>
                                 </p>
                             </div>
                         </div>
                         <a class="dropdown-item" href="javascript:void(0)" onclick="profile();">My Profile</a>
-                        <form method="POST" action="./login.php">
+                        <form method="POST" action="./logout.php">
                             <button type="submit" class="dropdown-item"
                                 onclick="return confirm('Are you sure you want to logout?');">Logout</button>
                         </form>

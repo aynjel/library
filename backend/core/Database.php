@@ -9,7 +9,7 @@ class Database{
             $_count = 0,
             $_lastInsertId = null;
             
-    private function __construct(){
+    public function __construct(){
         try{
             $host = Config::get('mysql/host');
             $db = Config::get('mysql/db');
