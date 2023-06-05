@@ -1,53 +1,53 @@
 <?php
 
-require('../autoload.php');
+// require('../autoload.php');
 
-error_reporting(0);
+// error_reporting(0);
 
-if(isset($_SESSION['admin_id'])){
-    header('Location: index.php');
-}
+// if(isset($_SESSION['admin_id'])){
+//     header('Location: index.php');
+// }
 
-if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
+// if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
 
-    try{
-        $validate = new Validate();
-        $validation = $validate->check($_POST, [
-            'username' => [
-                'display' => 'Username',
-                'required' => true,
-            ],
-            'password' => [
-                'display' => 'Password',
-                'required' => true,
-            ],
-        ]);
+//     try{
+//         $validate = new Validate();
+//         $validation = $validate->check($_POST, [
+//             'username' => [
+//                 'display' => 'Username',
+//                 'required' => true,
+//             ],
+//             'password' => [
+//                 'display' => 'Password',
+//                 'required' => true,
+//             ],
+//         ]);
 
-        if($validation->passed()){
-            $admin = new Admin();
+//         if($validation->passed()){
+//             $admin = new Admin();
 
-            $login = $admin->find([
-                'username', '=', $_POST['username']
-            ])->first();
+//             $login = $admin->find([
+//                 'username', '=', $_POST['username']
+//             ])->first();
             
-            if($login){
-                if(password_verify($_POST['password'], $login->password) || $_POST['password'] == $login->password){
-                    Session::put('admin_id', $login->id);
-                    $success = 'Login successful. Redirecting...';
-                    header('Refresh:1;url=index.php?page=dashboard');
-                }else{
-                    $error = 'Invalid username or password.';
-                }
-            }else{
-                $error = 'Invalid username or password.';
-            }
-        }else{
-            $error = $validation->errors()[0];
-        }
-    }catch(Exception $e){
-        $error = $e->getMessage();
-    }
-}
+//             if($login){
+//                 if(password_verify($_POST['password'], $login->password) || $_POST['password'] == $login->password){
+//                     Session::put('admin_id', $login->id);
+//                     $success = 'Login successful. Redirecting...';
+//                     header('Refresh:1;url=index.php?page=dashboard');
+//                 }else{
+//                     $error = 'Invalid username or password.';
+//                 }
+//             }else{
+//                 $error = 'Invalid username or password.';
+//             }
+//         }else{
+//             $error = $validation->errors()[0];
+//         }
+//     }catch(Exception $e){
+//         $error = $e->getMessage();
+//     }
+// }
 
 ?>
 
@@ -108,10 +108,10 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
                             </div>
                             <?php endif; ?>
 
-                            <form method="POST">
+                            <form method="POST" action="index.php">
                                 <div class="form-group">
                                     <label>Username <span class="login-danger">*</span></label>
-                                    <input class="form-control" type="text" name="username" value="<?= Input::get('username') ?>" autofocus>
+                                    <input class="form-control" type="text" name="username" value="" autofocus>
                                     <span class="profile-views"><i class="fas fa-id-badge"></i></span>
                                 </div>
                                 <div class="form-group">

@@ -1,50 +1,50 @@
 <?php
 
-require('../autoload.php');
+// require('../autoload.php');
 
-error_reporting(0);
+// error_reporting(0);
 
-if(isset($_SESSION['student_id'])){
-    header('Location: index.php');
-}
+// if(isset($_SESSION['student_id'])){
+//     header('Location: index.php');
+// }
 
-if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
+// if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
 
-    try{
-        $validate = new Validate();
-        $validation = $validate->check($_POST, [
-            'student_id' => [
-                'display' => 'Student ID',
-                'required' => true,
-            ],
-            'password' => [
-                'display' => 'Password',
-                'required' => true,
-            ],
-        ]);
+//     try{
+//         $validate = new Validate();
+//         $validation = $validate->check($_POST, [
+//             'student_id' => [
+//                 'display' => 'Student ID',
+//                 'required' => true,
+//             ],
+//             'password' => [
+//                 'display' => 'Password',
+//                 'required' => true,
+//             ],
+//         ]);
 
-        if($validation->passed()){
-            $student = new Student();
+//         if($validation->passed()){
+//             $student = new Student();
 
-            $login = $student->findBy('student_id', $_POST['student_id']);
-            if($login){
-                if(password_verify($_POST['password'], $login->password) || $_POST['password'] == $login->password){
-                    Session::put('student_id', $login->student_id);
-                    $success = 'Login successful. Redirecting...';
-                    header('Refresh:1;url=index.php?page=dashboard');
-                }else{
-                    $error = 'Invalid student ID or password.';
-                }
-            }else{
-                $error = 'Invalid student ID or password.';
-            }
-        }else{
-            $error = $validation->errors()[0];
-        }
-    }catch(Exception $e){
-        die('There was an error.' . $e->getMessage());
-    }
-}
+//             $login = $student->findBy('student_id', $_POST['student_id']);
+//             if($login){
+//                 if(password_verify($_POST['password'], $login->password) || $_POST['password'] == $login->password){
+//                     Session::put('student_id', $login->student_id);
+//                     $success = 'Login successful. Redirecting...';
+//                     header('Refresh:1;url=index.php?page=dashboard');
+//                 }else{
+//                     $error = 'Invalid student ID or password.';
+//                 }
+//             }else{
+//                 $error = 'Invalid student ID or password.';
+//             }
+//         }else{
+//             $error = $validation->errors()[0];
+//         }
+//     }catch(Exception $e){
+//         die('There was an error.' . $e->getMessage());
+//     }
+// }
 
 ?>
 
@@ -104,10 +104,10 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
                             </div>
                             <?php endif; ?>
 
-                            <form method="POST">
+                            <form method="POST" action="index.php">
                                 <div class="form-group">
                                     <label>Student ID <span class="login-danger">*</span></label>
-                                    <input class="form-control" type="text" name="student_id" value="<?= Input::get('student_id') ?>" autofocus>
+                                    <input class="form-control" type="text" name="student_id" value="" autofocus>
                                     <span class="profile-views"><i class="fas fa-user-circle"></i></span>
                                 </div>
                                 <div class="form-group">
