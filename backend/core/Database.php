@@ -42,7 +42,7 @@ class Database{
             }
             
             if($this->_query->execute()){
-                $this->_results = $this->_query->fetchAll();
+                $this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ);
                 $this->_count = $this->_query->rowCount();
                 $this->_lastInsertId = $this->_pdo->lastInsertId();
             }else{
@@ -53,7 +53,9 @@ class Database{
         return $this;
     }
 
-    public function action($action, $table, $where = [], $orderBy = null, $limit = null){
+    public function delete($table, $where = []){
+        $sql = "DELETE FROM {$table}";
+
         if(count($where) === 3){
             $operators = ['=', '>', '<', '>=', '<='];
             
@@ -62,35 +64,15 @@ class Database{
             $value = $where[2];
             
             if(in_array($operator, $operators)){
-                $sql = "{$action} FROM {$table} WHERE {$field} {$operator} ?";
-                
-                if($orderBy){
-                    $sql .= " ORDER BY {$orderBy}";
-                }
-                
-                if($limit){
-                    $sql .= " LIMIT {$limit}";
-                }
+                $sql .= " WHERE {$field} {$operator} ?";
                 
                 if(!$this->query($sql, [$value])->error()){
-                    return $this;
+                    return true;
                 }
             }
         }
-        
+
         return false;
-    }
-
-    public function get($table, $where = [], $orderBy = null, $limit = null){
-        if(!$this->action('SELECT *', $table, $where, $orderBy, $limit)){
-            return false;
-        }else{
-            return $this->results();
-        }
-    }
-
-    public function delete($table, $where = []){
-        return $this->action('DELETE', $table, $where);
     }
 
     public function insert($table, $fields = []){
@@ -115,7 +97,7 @@ class Database{
         return false;
     }
 
-    public function update($table, $id, $fields = []){
+    public function update($table, $where = [], $fields = []){
         $set = '';
         $x = 1;
         
@@ -127,12 +109,24 @@ class Database{
             $x++;
         }
         
-        $sql = "UPDATE {$table} SET {$set} WHERE id = {$id}";
-        
-        if(!$this->query($sql, $fields)->error()){
-            return true;
+        $sql = "UPDATE {$table} SET {$set}";
+
+        if(count($where) === 3){
+            $operators = ['=', '>', '<', '>=', '<='];
+            
+            $field = $where[0];
+            $operator = $where[1];
+            $value = $where[2];
+            
+            if(in_array($operator, $operators)){
+                $sql .= " WHERE {$field} {$operator} ?";
+                
+                if(!$this->query($sql, array_merge($fields, [$value]))->error()){
+                    return true;
+                }
+            }
         }
-        
+
         return false;
     }
 

@@ -1,43 +1,29 @@
 <?php
 
 class Admin extends Model{
+
     public function __construct(){
         parent::__construct('admin', 'id');
     }
 
-    public function login($data = []){
-        $admin = $this->findByLike('username', $data['username']);
+    public function login($username, $password){
+        $admin = $this->findFirst([
+            'username' => $username
+        ]);
+
         if($admin){
-            if(password_verify($data['password'], $admin['password']) || $data['password'] == $admin['password']){
-                Session::put('admin_id', $admin['id']);
-                return true;
+            if(password_verify($password, $admin->password) || $password === $admin->password){
+                return $admin;
             }
-        }   
+        }
+
         return false;
     }
 
-    public function register($data = []){
-        return $this->insert($data);
-        // return $this->login(['username' => $data['username'], 'password' => $data['password']]);
-    }
-
-    public function logout(){
-        Session::destroy();
-    }
-
-    public function isLoggedIn(){
-        return Session::exists('admin_id');
-    }
-
-    public function getAdminId(){
-        return Session::get('admin_id');
-    }
-
-    public function getAdminInfo(){
-        return $this->findBy('id', $this->getAdminId());
-    }
-
-    public function getAdminName(){
-        return $this->getAdminInfo()->name;
+    public function findByUsername($username){
+        return $this->findFirst([
+            'conditions' => "username = ?",
+            'bind' => [$username]
+        ]);
     }
 }

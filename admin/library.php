@@ -116,17 +116,24 @@ if(isset($_GET['view'])){
                 </div>
                 <div class="col-sm-2">
                     <h6>Logs In</h6>
-                    <a href="?page=library&lists&logs=in&id=<?= $library_set->id; ?>" class="btn btn-success btn-sm">In</a>
+                    <a href="?page=library&lists&view&logs=in&id=<?= $library_set->id; ?>" class="btn btn-success btn-sm">In</a>
                 </div>
                 <div class="col-sm-2">
                     <h6>Logs Out</h6>
-                    <a href="?page=library&lists&logs=out&id=<?= $library_set->id; ?>" class="btn btn-danger btn-sm">Out</a>
+                    <a href="?page=library&lists&view&logs=out&id=<?= $library_set->id; ?>" class="btn btn-danger btn-sm">Out</a>
                 </div>
             </div>
             <hr>
-            <h6>
-                Logs
+                <?php
+                $library_request = new LibraryRequest();
+                $library_request_set = $library_request->find($library_set->library_req_id);
+                ?>
+            <h6 class="card-title">
+                Purpose
             </h6>
+            <p class="card-text text-muted text-uppercase">
+                <?= $library_request_set->req_description; ?>
+            </p>
             <div class="table-responsive">
                 <table class="table table-bordered table-hover table-striped">
                     <thead>
@@ -144,7 +151,7 @@ if(isset($_GET['view'])){
                             <tr>
                                 <td><?= date('F d, Y h:i A', strtotime($r->logs_datetime)); ?></td>
                                 <td>
-                                    <?php if($r->logs_status == 1): ?>
+                                    <?php if($r->logs_status == 'in'): ?>
                                         <span class="badge bg-success">In</span>
                                     <?php else: ?>
                                         <span class="badge bg-danger">Out</span>
@@ -164,6 +171,7 @@ if(isset($_GET['view'])){
     </div>
 
     <?php
+
 }
 
 }elseif(isset($_GET['requests'])){
@@ -261,6 +269,35 @@ if(isset($_GET['approve'])){
     ]);
     
     echo "<script>window.location.href = '?page=library&requests'; </script>";
+}elseif(isset($_GET['logs']) && $_GET['logs'] == 'in'){
+    $logs = $_GET['logs'];
+    $id = $_GET['id'];
+
+    $library_logs = new LibraryLogs();
+    $library_logs_set = $library_logs->insert([
+        'student_id' => 1,
+        'library_id' => 1,
+        'date' => date('Y-m-d H:i:s'),
+        'logs_status' => $logs
+    ]);
+
+    echo "<script>window.location.href = '?page=library&lists&view&logs=out&id=$id'; </script>";
+}elseif(isset($_GET['logs']) && $_GET['logs'] == 'out'){
+    $logs = $_GET['logs'];
+    $id = $_GET['id'];
+
+    $library = new Library();
+    $library_set = $library->find($id);
+
+    $library_logs = new LibraryLogs();
+    $library_logs_set = $library_logs->insert([
+        'student_id' => $library_set->student_id,
+        'library_id' => $library_set->id,
+        'date' => date('Y-m-d H:i:s'),
+        'logs_status' => $logs
+    ]);
+
+    // echo "<script>window.location.href = '?page=library&lists&view&id=$id'; </script>";
 }
 
 }

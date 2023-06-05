@@ -26,7 +26,10 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
         if($validation->passed()){
             $admin = new Admin();
 
-            $login = $admin->findBy('username', $_POST['username']);
+            $login = $admin->find([
+                'username', '=', $_POST['username']
+            ])->first();
+            
             if($login){
                 if(password_verify($_POST['password'], $login->password) || $_POST['password'] == $login->password){
                     Session::put('admin_id', $login->id);

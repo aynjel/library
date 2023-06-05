@@ -8,49 +8,111 @@ class Model {
         $this->table = $table;
         $this->primaryKey = $primaryKey;
     }
-
-    public function find($id){
-        return $this->db->query("SELECT * FROM {$this->table} WHERE {$this->primaryKey} = ?", [$id])->first();
-    }
-
-    public function findByStudentId($id){
-        return $this->db->query("SELECT * FROM {$this->table} WHERE student_id = ?", [$id])->first();
-    }
-
-    public function findByLibReqID($id){
-        return $this->db->query("SELECT * FROM {$this->table} WHERE library_req_id = ?", [$id])->first();
-    }
     
+    public function find($id, $fields = []){
+        $fields = implode(', ', $fields);
+        if(is_int($id)){
+            $conditions = "id = ?";
+            $bind = [$id];
+        }else{
+            $conditions = $id;
+            $bind = [];
+        }
+        
+        return $this->findFirst([
+            'conditions' => $conditions,
+            'bind' => $bind,
+            'fields' => $fields
+        ]);
+    }
+
+    public function findFirst($params = []){
+        $params = array_merge([
+            'conditions' => '',
+            'bind' => [],
+            'order' => '',
+            'limit' => '',
+            'fields' => '*'
+        ], $params);
+
+        $sql = "SELECT {$params['fields']} FROM {$this->table}";
+
+        if($params['conditions'] != ''){
+            $sql .= " WHERE {$params['conditions']}";
+        }
+
+        if($params['order'] != ''){
+            $sql .= " ORDER BY {$params['order']}";
+        }
+
+        if($params['limit'] != ''){
+            $sql .= " LIMIT {$params['limit']}";
+        }
+
+        $result = $this->db->query($sql, $params['bind']);
+
+        return $result->first();
+    }
+
+    public function findBy($params = []){
+        $params = array_merge([
+            'conditions' => '',
+            'bind' => [],
+            'order' => '',
+            'limit' => '',
+            'fields' => '*'
+        ], $params);
+
+        $sql = "SELECT {$params['fields']} FROM {$this->table}";
+
+        if($params['conditions'] != ''){
+            $sql .= " WHERE {$params['conditions']}";
+        }
+
+        if($params['order'] != ''){
+            $sql .= " ORDER BY {$params['order']}";
+        }
+
+        if($params['limit'] != ''){
+            $sql .= " LIMIT {$params['limit']}";
+        }
+
+        $result = $this->db->query($sql, $params['bind']);
+
+        return $result->results();
+    }
+
     public function findAll(){
-        if(!$this->db->query("SELECT * FROM {$this->table}")){
-            return false;
-        }else{
-            return $this->db->results();
-        }
+        return $this->db->query("SELECT * FROM {$this->table}")->results();
     }
 
-    public function findBy($field, $value){
-        $this->db->query("SELECT * FROM {$this->table} WHERE {$field} = ?", [$value]);
-        if(!$this->db->query("SELECT * FROM {$this->table} WHERE {$field} = ?", [$value])){
-            return false;
-        }else{
-            return $this->db->first();
-        }
+    public function findByUserId($user_id, $params = []){
+        $conditions = [
+            'conditions' => 'user_id = ?',
+            'bind' => [$user_id]
+        ];
+        
+        $conditions = array_merge($conditions, $params);
+        
+        return $this->find($conditions);
     }
 
-    public function findByLike($field, $value){
-        return $this->db->query("SELECT * FROM {$this->table} WHERE {$field} LIKE '%{$value}%' ORDER BY {$this->primaryKey} DESC")->results();
+    public function query($sql, $bind = []){
+        return $this->db->query($sql, $bind);
     }
 
-    public function insert($fields = []){
+    public function insert($fields){
+        if(empty($fields)) return false;
         return $this->db->insert($this->table, $fields);
     }
 
-    public function update($id, $fields = []){
-        return $this->db->update($this->table, $id, $fields);
+    public function update($id, $fields){
+        if(empty($fields) || $id == '') return false;
+        return $this->db->update($this->table, [$this->primaryKey => $id], $fields);
     }
 
     public function delete($id){
-        return $this->db->delete($this->table, [$this->primaryKey, '=', $id]);
+        if($id == '') return false;
+        return $this->db->delete($this->table, [$this->primaryKey => $id]);
     }
 }
