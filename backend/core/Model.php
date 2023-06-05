@@ -8,6 +8,13 @@ class Model {
         $this->table = $table;
         $this->primaryKey = $primaryKey;
     }
+<<<<<<< HEAD
+=======
+
+    public function find($id){
+        return $this->db->get($this->table, [$this->primaryKey, '=', $id])->first();
+    }
+>>>>>>> parent of 7aec0d0 (system update 1)
     
     public function find($id, $fields = []){
         $fields = implode(', ', $fields);

@@ -82,15 +82,15 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
                 <div class="loginbox shadow-lg">
                     <div class="login-left bg-warning d-flex align-items-center justify-content-center">
                         <img class="img-fluid" src="../assets/img/login-logo.png" alt="Logo">
-                        <h3 class="text-white text-center mt-3">EZ-LIBRARY PASS</h3>
-                        <h1 class="text-white text-center mt-3">
+                        <h2 class="text-white text-center mt-3">
                             <i class="fas fa-book-reader"></i> <i class="fas fa-user-graduate"></i>
-                        </h1>
+                        </h2>
                     </div>
                     <div class="login-right">
                         <div class="login-right-wrap">
-                            
-                            <h2 class="h1 text-uppercase">Sign in</h2>
+                            <h1>Welcome to EZ - LIBRARY PASS</h1>
+                            <p class="account-subtitle">Need an account? <a href="register.php">Sign Up</a></p>
+                            <h2>Sign in</h2>
 
                             <?php if(isset($error)): ?>
                             <div class="alert alert-danger mb-3" role="alert">
@@ -107,8 +107,8 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
                             <form method="POST">
                                 <div class="form-group">
                                     <label>Student ID <span class="login-danger">*</span></label>
-                                    <input class="form-control" type="number" name="student_id" value="<?= Input::get('student_id') ?>" autofocus>
-                                    <span class="profile-views"><i class="fas fa-id-badge"></i></span>
+                                    <input class="form-control" type="text" name="student_id" value="<?= Input::get('student_id') ?>" autofocus>
+                                    <span class="profile-views"><i class="fas fa-user-circle"></i></span>
                                 </div>
                                 <div class="form-group">
                                     <label>Password <span class="login-danger">*</span></label>
@@ -126,8 +126,6 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
                                 </div> -->
                                 <div class="form-group">
                                     <button class="btn btn-primary btn-block" type="submit">Login</button>
-                                    
-                                    <p class="account-subtitle mt-3">Need an account? <a href="register.php">Sign Up</a></p>
                                 </div>
                             </form>
 

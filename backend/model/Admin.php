@@ -20,10 +20,32 @@ class Admin extends Model{
         return false;
     }
 
+<<<<<<< HEAD
     public function findByUsername($username){
         return $this->findFirst([
             'conditions' => "username = ?",
             'bind' => [$username]
         ]);
+=======
+    public function register($data = []){
+        return $this->insert($data);
+        // return $this->login(['username' => $data['username'], 'password' => $data['password']]);
+    }
+
+    public function logout(){
+        Session::destroy();
+    }
+
+    public function isLoggedIn(){
+        return Session::exists('admin_id');
+    }
+
+    public function getAdminId(){
+        return Session::get('admin_id');
+    }
+
+    public function getAdminInfo(){
+        return $this->findByLike('username', $this->getAdminId());
+>>>>>>> parent of 7aec0d0 (system update 1)
     }
 }

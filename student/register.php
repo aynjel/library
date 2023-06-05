@@ -24,6 +24,7 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
             ],
             'middle_name' => [
                 'display' => 'Middle Name',
+                'required' => false,
             ],
             'last_name' => [
                 'display' => 'Last Name',
@@ -35,11 +36,7 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
             ],
             'section' => [
                 'display' => 'Section',
-                'required' => true,
-            ],
-            'course' => [
-                'display' => 'Course',
-                'required' => true,
+                'required' => false,
             ],
             'password' => [
                 'display' => 'Password',
@@ -57,13 +54,12 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
 
             $register = $student->register([
                 'student_id' => $_POST['student_id'],
-                'password' => $_POST['password'],
                 'first_name' => $_POST['first_name'],
                 'middle_name' => $_POST['middle_name'],
                 'last_name' => $_POST['last_name'],
                 'year_level' => @$_POST['year_level'],
                 'section' => $_POST['section'],
-                'course' => $_POST['course'],
+                'password' => $_POST['password'],
             ]);
 
             if(!$register){
@@ -116,10 +112,9 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
                 <div class="loginbox shadow-lg">
                     <div class="login-left bg-warning d-flex align-items-center justify-content-center">
                         <img class="img-fluid" src="../assets/img/login-logo.png" alt="Logo">
-                        <h3 class="text-white text-center mt-3">EZ-LIBRARY PASS</h3>
-                        <h1 class="text-white text-center mt-3">
+                        <h2 class="text-white text-center mt-3">
                             <i class="fas fa-book-reader"></i> <i class="fas fa-user-graduate"></i>
-                        </h1>
+                        </h2>
                     </div>
                     <div class="login-right">
                         <div class="login-right-wrap">
@@ -141,26 +136,23 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
                             <form method="POST">
                                 <div class="form-group">
                                     <label>Student ID <span class="login-danger">*</span></label>
-                                    <input class="form-control" type="number" name="student_id" value="<?= Input::get('student_id') ?>">
+                                    <input class="form-control" type="text" name="student_id" value="<?= Input::get('student_id') ?>">
                                     <span class="profile-views"><i class="fas fa-id-badge"></i></span>
                                 </div>
                                 <div class="form-group">
                                     <label>First Name <span class="login-danger">*</span></label>
                                     <input class="form-control" type="text" name="first_name" value="<?= Input::get('first_name') ?>">
+                                    <span class="profile-views"><i class="fas fa-user-circle"></i></span>
                                 </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <label>Middle Name</label>
-                                            <input class="form-control" type="text" name="middle_name" value="<?= Input::get('middle_name') ?>">
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <label>Last Name <span class="login-danger">*</span></label>
-                                            <input class="form-control" type="text" name="last_name" value="<?= Input::get('last_name') ?>">
-                                        </div>
-                                    </div>
+                                <div class="form-group">
+                                    <label>Middle Name</label>
+                                    <input class="form-control" type="text" name="middle_name" value="<?= Input::get('middle_name') ?>">
+                                    <span class="profile-views"><i class="fas fa-user-circle"></i></span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name <span class="login-danger">*</span></label>
+                                    <input class="form-control" type="text" name="last_name" value="<?= Input::get('last_name') ?>">
+                                    <span class="profile-views"><i class="fas fa-user-circle"></i></span>
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
@@ -173,39 +165,16 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
                                                 <option value="3">3rd Year</option>
                                                 <option value="4">4th Year</option>
                                             </select>
+                                            <span class="profile-views"><i class="fas fa-sort-numeric-up"></i></span>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label>Section <span class="login-danger">*</span></label>
+                                            <label>Section</label>
                                             <input class="form-control" type="text" name="section" value="<?= Input::get('section') ?>">
+                                            <span class="profile-views"><i class="fas fa-network-wired"></i></span>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Course <span class="login-danger">*</span></label>
-                                    <select class="form-control" name="course">
-                                        <option selected hidden disabled>Course</option>
-                                        <?php
-                                        $bachelor = "Bachelor of ";
-                                        $courses = [
-                                            'Science in Information Technology',
-                                            'Science in Industrial Technology',
-                                            'Science in Electrical Engineering',
-                                            'Science in Mechanical Engineering',
-                                            'Science in Industrial Engineering',
-                                            'Science in Agriculture',
-                                            'Secondary Education',
-                                            'Elementary Education',
-                                            'College of Arts and Sciences',
-                                        ];
-                                        foreach($courses as $course){
-                                            echo "<option value='$bachelor$course'>$bachelor$course</option>";
-                                        }
-
-                                        ?>
-                                    </select>
-                                    <span class="profile-views"><i class="fas fa-graduation-cap"></i></span>
                                 </div>
                                 <div class="form-group">
                                     <label>Password <span class="login-danger">*</span></label>
