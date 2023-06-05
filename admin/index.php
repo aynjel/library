@@ -13,6 +13,13 @@
     <link rel="stylesheet" href="../assets/plugins/fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="../assets/plugins/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        body{
+            background-image: url("../assets/img/360_F_574706059_s4gBUvmVNHeD0XYkVra822kli7NbWsgt.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
 </head>
 
 <body>
