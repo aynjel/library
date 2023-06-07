@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 06, 2023 at 01:23 AM
+-- Generation Time: Jun 07, 2023 at 02:41 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -54,15 +54,6 @@ CREATE TABLE `library` (
   `approved_datetime` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `library`
---
-
-INSERT INTO `library` (`id`, `library_req_id`, `student_id`, `approved_datetime`) VALUES
-(26, 13, 12345678, '2023-06-05 08:05:45'),
-(27, 10, 12345678, '2023-06-05 08:05:45'),
-(28, 11, 12345678, '2023-06-05 08:05:45');
-
 -- --------------------------------------------------------
 
 --
@@ -96,11 +87,7 @@ CREATE TABLE `library_request` (
 --
 
 INSERT INTO `library_request` (`id`, `student_id`, `req_datetime`, `req_description`, `status`) VALUES
-(9, 12345678, '2023-06-16 16:20:00', 'Study Philosphy', 2),
-(10, 12345678, '2023-03-27 05:05:00', 'sdfsafas', 1),
-(11, 12345678, '2023-06-23 02:03:00', 'sdfsafsaf', 1),
-(12, 12345678, '2023-06-14 03:02:00', 'asfsfafadga', 0),
-(13, 12345678, '2023-06-27 12:03:00', 'sdfasfasf', 1);
+(18, 12345678, '2023-06-22 03:04:00', 'asdasda', 0);
 
 -- --------------------------------------------------------
 
@@ -125,9 +112,7 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`id`, `student_id`, `password`, `first_name`, `middle_name`, `last_name`, `year_level`, `section`, `course`) VALUES
-(15, 12345678, 'asd', 'Anggi', 'C', 'Ortega', 3, 'B', 'Bachelor of Science in Mechanical Engineering'),
-(17, 2018, 'password', 'John', 'Doe', 'Doe', 1, 'A', 'BSIT'),
-(19, 123234234, 'Pa$$w0rd!', 'Teegan', 'Mannix Bailey', 'Contreras', 3, 'Doloremque assumenda', 'BSCS');
+(22, 12345678, 'asd', 'Angel Niño', 'Canillo', 'Ortega', 4, 'B', 'BSIT');
 
 --
 -- Indexes for dumped tables
@@ -187,19 +172,19 @@ ALTER TABLE `library`
 -- AUTO_INCREMENT for table `library_logs`
 --
 ALTER TABLE `library_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `library_request`
 --
 ALTER TABLE `library_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
