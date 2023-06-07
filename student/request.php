@@ -1,42 +1,57 @@
 <?php
 
-// if($_SERVER['REQUEST_METHOD'] == 'POST'){
-//     try{
-//         $validate = new Validate();
-//         $validation = $validate->check($_POST, array(
-//             'datetime' => [
-//                 'display' => 'Date and Time',
-//                 'required' => true,
-//             ],
-//             'description' => [
-//                 'display' => 'Description',
-//                 'required' => true,
-//             ]
-//         ));
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    try{
+        $validate = new Validate();
+        $validation = $validate->check($_POST, array(
+            'datetime' => [
+                'display' => 'Date and Time',
+                'required' => true,
+            ],
+            'description' => [
+                'display' => 'Description',
+                'required' => true,
+            ]
+        ));
 
-//         if($validation->passed()){
-//             $library_request = new LibraryRequest();
-//             $res = $library_request->addLibraryRequest([
-//                 'student_id' => $student->getStudentId(),
-//                 'req_datetime' => Input::get('datetime'),
-//                 'req_description' => Input::get('description'),
-//             ]);
-//             if($res){
-//                 $success = 'Request sent successfully';
-//                 echo "<script>setTimeout(\"location.href = '?page=request';\",1500);</script>";
-//             }else{
-//                 $error = 'Something went wrong';
-//             }
-//         }else{
-//             $error = implode('<br>', $validation->errors());
-//         }
-//     }catch(Exception $e){
-//         $error = $e->getMessage();
-//     }
-// }
+        if($validation->passed()){
+            $library_request = new LibraryRequest();
+            $res = $library_request->createRequest([
+                'student_id' => $student->getStudentId(),
+                'req_datetime' => Input::get('datetime'),
+                'req_description' => Input::get('description'),
+            ]);
+            if($res){
+                $success = 'Request sent successfully';
+                echo "<script>setTimeout(\"location.href = '?page=request';\",1500);</script>";
+            }else{
+                $error = 'Something went wrong';
+            }
+        }else{
+            $error = implode('<br>', $validation->errors());
+        }
+    }catch(Exception $e){
+        $error = $e->getMessage();
+    }
+}
 
-// $library_request = new LibraryRequest();
-// $requests = $library_request->getLibraryRequestsByLike('student_id', $student->getStudentId());
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['del-req'])){
+    try{
+        $library_request = new LibraryRequest();
+        $res = $library_request->deleteRequest(Input::get('id'));
+        if($res){
+            $success = 'Request deleted successfully';
+            echo "<script>location.href = '?page=request';</script>";
+        }else{
+            $error = 'Something went wrong';
+        }
+    }catch(Exception $e){
+        $error = $e->getMessage();
+    }
+}
+
+$library_request = new LibraryRequest();
+$requests = $library_request->getLibraryRequestsByLike('student_id', $student->getStudentId());
 
 ?>
 
@@ -46,7 +61,7 @@
         <div class="card flex-fill comman-shadow">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-3">
                         <h5 class="card-title ">Request Slot Information </h5>
                         <hr>
                         <?php if(isset($error)): ?>
@@ -69,30 +84,43 @@
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </div>
-                    <div class="col-6">
+                    <div class="col-9 h-100 scroll-y-auto">
                         <h5 class="card-title ">Pending Request </h5>
                         <hr>
-                        <div class="activity-groups">
-                            <div class="activity-awards">
-                                <div class="award-boxs">
-                                    <i class="fas fa-xs fa-check"></i>
-                                    <!-- <?php if($r->status == 1): ?>
-                                    <?php else: ?>
-                                        <i class="fas fa-xs fa-times"></i>
-                                    <?php endif; ?> -->
-                                </div>
-                                <div class="award-list-outs">
-                                    <h4>Datetime</h4>
-                                    <h5>Purpose</h5>
-                                </div>
-                                <div class="award-time-list">
-                                    Pending
-                                    <!-- <span><?= $r->status == 1 ? 'Approved' : 'Pending' ?></span> -->
+                        <?php if($requests > 0):?>
+                        <?php foreach($requests as $r): ?>
+                            <div class="activity-groups">
+                                <div class="activity-awards">
+                                    <div class="award-boxs">
+                                        <?php if($r->status == 1): ?>
+                                            <i class="fas fa-xs fa-check"></i>
+                                        <?php else: ?>
+                                            <i class="fas fa-xs fa-times"></i>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="award-list-outs">
+                                        <h4>
+                                            <?= date('d M Y h:i A', strtotime($r->req_datetime)) ?>
+                                        </h4>
+                                        <h5>
+                                            <?= $r->req_description ?>
+                                        </h5>
+                                    </div>
+                                    <div class="award-time-list">
+                                        <span><?= $r->status == 1 ? 'Approved' : 'Pending' ?></span>
+                                    </div>
+                                    <form method="POST">
+                                        <input type="hidden" name="id" value="<?= $r->id ?>">
+                                        <button type="submit" class="btn btn-danger btn-sm" name="del-req">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
-                        </div>
-                        <!-- <?php foreach($requests as $r): ?> -->
-                        <!-- <?php endforeach; ?> -->
+                        <?php endforeach; ?>
+                        <?php else: ?>
+                            <div class="alert alert-info">No Request has been sent yet</div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

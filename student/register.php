@@ -190,6 +190,17 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
                                                 <option value="BSIS">BSIS</option>
                                                 <option value="BSEMC">BSEMC</option>
                                                 <option value="BSECE">BSECE</option>
+                                                <option value="BSCE">BSCE</option>
+                                                <option value="BSME">BSME</option>
+                                                <option value="BSEE">BSEE</option>
+                                                <option value="BSIE">BSIE</option>
+                                                <option value="BSEnSE">BSEnSE</option>
+                                                <option value="BSA">BSA</option>
+                                                <option value="BSBA">BSBA</option>
+                                                <option value="BSHRM">BSHRM</option>
+                                                <option value="BSTM">BSTM</option>
+                                                <option value="BSN">BSN</option>
+                                                <option value="BSED">BSED</option>
                                             </select>
                                         </div>
                                     </div>

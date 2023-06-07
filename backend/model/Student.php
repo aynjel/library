@@ -53,4 +53,12 @@ class Student extends Database{
         }
         return false;
     }
+
+    public function getStudents(){
+        $students = $this->query("SELECT * FROM students")->results();
+        if($students){
+            return $students;
+        }
+        return false;
+    }
 }

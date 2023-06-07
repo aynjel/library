@@ -4,7 +4,7 @@ require('../autoload.php');
 
 error_reporting(0);
 
-if(isset($_SESSION['admin_id'])){
+if(isset($_SESSION['admin'])){
     header('Location: index.php');
 }
 
@@ -101,7 +101,7 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST'){
                             </div>
                             <?php endif; ?>
 
-                            <form method="POST" action="index.php">
+                            <form method="POST">
                                 <div class="form-group">
                                     <label>Username <span class="login-danger">*</span></label>
                                     <input class="form-control" type="text" name="username" value="" autofocus>

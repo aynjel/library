@@ -1,10 +1,41 @@
+<?php
+
+require('../autoload.php');
+
+$admin = new Admin();
+
+// if(!$admin->isLoggedIn()){
+//     header('Location: ./login.php');
+// }
+
+if(isset($_GET['page'])){
+    $page = $_GET['page'];
+}else{
+    $page = 'dashboard';
+}
+
+$a = $admin->getAdmin($_SESSION['admin']);
+
+$title = ucwords(str_replace('-', ' ', $page));
+
+$student = new Student();
+$students = $student->getStudents();
+
+$library_request = new LibraryRequest();
+$requests = $library_request->getRequests();
+$approved_req = $library_request->getApprovedRequests();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Admin Dashboard</title>
+    <title>
+        <?= $title ?> | Library Management System
+    </title>
     <link rel="shortcut icon" href="../assets/img/favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500;1,700&display=swap"rel="stylesheet">
     <link rel="stylesheet" href="../assets/plugins/bootstrap/css/bootstrap.min.css">
@@ -13,13 +44,6 @@
     <link rel="stylesheet" href="../assets/plugins/fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="../assets/plugins/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
-    <style>
-        body{
-            background-image: url("../assets/img/360_F_574706059_s4gBUvmVNHeD0XYkVra822kli7NbWsgt.jpg");
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-    </style>
 </head>
 
 <body>
@@ -60,9 +84,11 @@
                             <i class="fas fa-user-circle text-primary"></i>
                             <div class="user-text">
                                 <h6>
-                                    Admin
+                                    <?= $a->name ?>
                                 </h6>
-                                <p class="text-muted mb-0">Administrator</p>
+                                <p class="text-muted mb-0">
+                                    <?= $a->username ?>
+                                </p>
                             </div>
                         </span>
                     </a>
@@ -74,12 +100,24 @@
                             </div>
                             <div class="user-text">
                                 <h6>
-                                    Admin
+                                    <?= $a->name ?>
                                 </h6>
-                                <p class="text-muted mb-0">Administrator</p>
+                                <p class="text-muted mb-0">
+                                    <?= $a->username ?>
+                                </p>
                             </div>
                         </div>
-                        <a class="dropdown-item" href="login.php">Logout</a>
+                        <?php if(isset($_POST['logout'])): ?>
+                        <?php
+                            $admin->logout();
+                            header('Location: ./login.php');
+                        ?>
+                        <?php endif; ?>
+                        <form method="POST">
+                            <button type="submit" name="logout" class="dropdown-item" onclick="return confirm('Are you sure you want to logout?')">
+                                Logout
+                            </button>
+                        </form>
                     </div>
                 </li>
 
@@ -95,24 +133,53 @@
                         <li class="menu-title">
                             <span>Main Menu</span>
                         </li>
-                        <li class="">
-                            <a href="#"><i class="feather-grid"></i> <span> Dashboard</span>
+                        <?php if($page == 'dashboard'): ?>
+                        <li class="active">
+                            <a href="index.php"><i class="fas fa-th-large"></i> <span> Dashboard</span></a>
                         </li>
+                        <?php else: ?>
+                        <li>
+                            <a href="index.php"><i class="fas fa-th-large"></i> <span> Dashboard</span></a>
+                        </li>
+                        <?php endif; ?>
+
+                        <?php if($page == 'students'): ?>
+                        <li class="submenu active">
+                            <a href="#" class="active"><i class="fas fa-graduation-cap"></i> <span> Students</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="?page=students">Student List</a></li>
+                            </ul>
+                        </li>
+                        <?php else: ?>
                         <li class="submenu">
                             <a href="#"><i class="fas fa-graduation-cap"></i> <span> Students</span> <span
                                     class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="students.html">Student List</a></li>
+                                <li><a href="?page=students">Student List</a></li>
                             </ul>
                         </li>
+                        <?php endif; ?>
+
+                        <?php if($page == 'library'): ?>
+                        <li class="submenu active">
+                            <a href="#" class="active"><i class="fas fa-book-reader"></i> <span> Library</span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul>
+                                <li><a href="?page=library">Master List</a></li>
+                                <li><a href="?page=request">View Requests</a></li>
+                            </ul>
+                        </li>
+                        <?php else: ?>
                         <li class="submenu">
                             <a href="#"><i class="fas fa-book-reader"></i> <span> Library</span> <span
                                     class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="subjects.html">Master List</a></li>
-                                <li><a href="add-subject.html">View Requests</a></li>
+                                <li><a href="?page=library">Master List</a></li>
+                                <li><a href="?page=request">View Requests</a></li>
                             </ul>
                         </li>
+                        <?php endif; ?>
                     </ul>
                 </div>
             </div>
@@ -128,7 +195,7 @@
                             <div class="page-sub-header">
                                 <h3 class="page-title">Welcome Admin!</h3>
                                 <ul class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="index.php"><?= $title ?></a></li>
                                     <li class="breadcrumb-item active">Admin</li>
                                 </ul>
                             </div>
@@ -136,88 +203,16 @@
                     </div>
                 </div>
 
+                <?php 
 
-                <div class="row">
-                    <div class="col-xl-6 col-sm-6 col-12 d-flex">
-                        <div class="card bg-comman w-100">
-                            <div class="card-body">
-                                <div class="db-widgets d-flex justify-content-between align-items-center">
-                                    <div class="db-info">
-                                        <h6>Students</h6>
-                                        <h3>0</h3>
-                                    </div>
-                                    <div class="db-icon">
-                                        <i class="fas fa-users"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-sm-6 col-12 d-flex">
-                        <div class="card bg-comman w-100">
-                            <div class="card-body">
-                                <div class="db-widgets d-flex justify-content-between align-items-center">
-                                    <div class="db-info">
-                                        <h6>Requests</h6>
-                                        <h3>0</h3>
-                                    </div>
-                                    <div class="db-icon">
-                                        <i class="fas fa-user-plus"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    if(file_exists("{$page}.php")){
+                        require("{$page}.php");
+                    }else{
+                        require("dashboard.php");
+                    }
 
-                <div class="card flex-fill student-space comman-shadow">
-                            <div class="card-header d-flex align-items-center">
-                                <h5 class="card-title">Star Students</h5>
-                                <ul class="chart-list-out student-ellips">
-                                    <li class="star-menus"><a href="javascript:;"><i class="fas fa-ellipsis-v"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table
-                                        class="table star-student table-hover table-center table-borderless table-striped">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Name</th>
-                                                <th class="text-center">Marks</th>
-                                                <th class="text-center">Percentage</th>
-                                                <th class="text-end">Year</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="text-nowrap">
-                                                    <div>PRE2209</div>
-                                                </td>
-                                                <td class="text-nowrap">
-                                                    <a href="profile.html">
-                                                        <img class="rounded-circle"
-                                                            src="../assets/img/profiles/avatar-02.jpg" width="25"
-                                                            alt="Star Students">
-                                                        John Smith
-                                                    </a>
-                                                </td>
-                                                <td class="text-center">1185</td>
-                                                <td class="text-center">98%</td>
-                                                <td class="text-end">
-                                                    <div>2019</div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                ?>
 
-
-               
             </div>
             <footer>
                 <p>Copyright © 2023 Anggi.</p>
@@ -232,6 +227,31 @@
     <script src="../assets/plugins/apexchart/apexcharts.min.js"></script>
     <script src="../assets/plugins/apexchart/chart-data.js"></script>
     <script src="../assets/js/script.js"></script>
+    
+    <script>
+        function changeStatus(status, id){
+            $.ajax({
+                url: './../backend/api/changeStatus.php',
+                method: 'POST',
+                data: {
+                    status: status,
+                    id: id
+                },
+                success: function(data){
+                    if(data == 'success'){
+                        alert('Status updated successfully.');
+                        location.reload();
+                    }else{
+                        console.log(data);
+                        alert('Something went wrong.');
+                    }
+                },
+                error: function(err){
+                    console.log(err);
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
