@@ -40,6 +40,14 @@ class LibraryRequest extends Database{
         return false;
     }
 
+    public function getLibraryPendingRequestsByLike($field, $value){
+        $requests = $this->query("SELECT * FROM library_request WHERE $field LIKE ? AND status = 0 ORDER BY id DESC", array("%$value%"))->results();
+        if($requests){
+            return $requests;
+        }
+        return false;
+    }
+
     public function getLibraryRequests(){
         $requests = $this->query("SELECT * FROM library_request WHERE status = 0")->results();
         if($requests){

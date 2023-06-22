@@ -21,8 +21,8 @@ $logs = $log->getLibraryLogsByLike('library_id', Input::get('id'));
 $library_request = new LibraryRequest();
 $req = $library_request->getLibraryRequestById(Input::get('id'));
 
-$library = new Library();
-$lib = $library->getLibraryById(Input::get('id'));
+// $library = new Library();
+// $lib = $library->getLibraryById(Input::get('id'));
 ?>
 
 <div class="row">
@@ -35,7 +35,8 @@ $lib = $library->getLibraryById(Input::get('id'));
                 </h3>
 
                 <h4 class="card-title ">
-                    Date Approved: <?= date('d M Y h:i A', strtotime($lib->approved_datetime)) ?>
+                    Date Requested: <?= date('d M Y h:i A', strtotime($req->req_datetime)) ?>
+                </h4>
             </div>
             <div class="card-body">
                 <div class="row">

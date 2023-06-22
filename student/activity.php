@@ -17,8 +17,8 @@ $logs = $library_logs->getLibraryLogsByStudentId($student->getStudentId());
                 <?php endif; ?>
                 <?php foreach($logs as $l): ?>
                     <?php 
-                    $library = new Library();
-                    $lib = $library->getLibraryById($l->library_id);
+                    // $library = new Library();
+                    // $lib = $library->getLibraryById($l->library_id);
                     ?>
                     <div class="activity-groups">
                         <div class="activity-awards">
@@ -34,7 +34,7 @@ $logs = $library_logs->getLibraryLogsByStudentId($student->getStudentId());
                                     <?= date('d M Y h:i A', strtotime($l->date)) ?>
                                 </h4>
                                 <h5>
-                                    <?= $l->student_id ?> | Library ID: <?= $lib->id ?>
+                                    <?= $l->student_id ?>
                                 </h5>
                             </div>
                         </div>

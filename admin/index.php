@@ -4,9 +4,9 @@ require('../autoload.php');
 
 $admin = new Admin();
 
-// if(!$admin->isLoggedIn()){
-//     header('Location: ./login.php');
-// }
+if(!$admin->isLoggedIn()){
+    header('Location: ./login.php');
+}
 
 if(isset($_GET['page'])){
     $page = $_GET['page'];
@@ -148,7 +148,7 @@ $approved_req = $library_request->getApprovedRequests();
                             <a href="#" class="active"><i class="fas fa-graduation-cap"></i> <span> Students</span> <span
                                     class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="?page=students">Student List</a></li>
+                                <li><a href="?page=students" class="active">Student List</a></li>
                             </ul>
                         </li>
                         <?php else: ?>
@@ -161,19 +161,26 @@ $approved_req = $library_request->getApprovedRequests();
                         </li>
                         <?php endif; ?>
 
-                        <?php if($page == 'library'): ?>
+                        <?php if($page == 'library' || $page == 'request'): ?>
                         <li class="submenu active">
                             <a href="#" class="active"><i class="fas fa-book-reader"></i> <span> Library</span> <span
                                     class="menu-arrow"></span></a>
                             <ul>
-                                <li><a href="?page=library">Master List</a></li>
+                                <?php if($page == 'library'): ?>
+                                <li><a href="?page=library" class="active">Master List</a></li>
                                 <li><a href="?page=request">View Requests</a></li>
+                                <?php else: ?>
+                                <?php endif; ?>
+                                <?php if($page == 'request'): ?>
+                                <li><a href="?page=library">Master List</a></li>
+                                <li><a href="?page=request" class="active">View Requests</a></li>
+                                <?php endif; ?>
                             </ul>
                         </li>
                         <?php else: ?>
-                        <li class="submenu">
-                            <a href="#"><i class="fas fa-book-reader"></i> <span> Library</span> <span
-                                    class="menu-arrow"></span></a>
+                            <li class="submenu">
+                                <a href="#"><i class="fas fa-book-reader"></i> <span> Library</span> <span
+                                class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="?page=library">Master List</a></li>
                                 <li><a href="?page=request">View Requests</a></li>

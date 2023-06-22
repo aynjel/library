@@ -37,6 +37,13 @@ $title = ucwords(str_replace('-', ' ', $page));
     <link rel="stylesheet" href="../assets/plugins/fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="../assets/plugins/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        .ui-datepicker-weekday {
+            background-color: green;
+            color: white;
+        }   
+    </style>
 </head>
 
 <body>
@@ -195,6 +202,17 @@ $title = ucwords(str_replace('-', ' ', $page));
     <script src="../assets/plugins/apexchart/apexcharts.min.js"></script>
     <script src="../assets/plugins/apexchart/chart-data.js"></script>
     <script src="../assets/js/script.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#myDatePicker').datepicker({
+                beforeShowDay: function(date) {
+                var day = date.getDay();
+                return [(day >= 1 && day <= 5), ''];
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -51,7 +51,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['del-req'])){
 }
 
 $library_request = new LibraryRequest();
-$requests = $library_request->getLibraryRequestsByLike('student_id', $student->getStudentId());
+$requests = $library_request->getLibraryPendingRequestsByLike('student_id', $student->getStudentId());
 
 ?>
 
@@ -73,7 +73,7 @@ $requests = $library_request->getLibraryRequestsByLike('student_id', $student->g
                         <form method="POST">
                             <div class="form-group">
                                 <label for="datetime">Date and Time</label>
-                                <input type="datetime-local" class="form-control" id="datetime" name="datetime"
+                                <input type="text" class="form-control" id="myDatePicker" name="datetime"
                                     placeholder="Enter date and time" value="">
                             </div>
                             <div class="form-group">
@@ -119,7 +119,7 @@ $requests = $library_request->getLibraryRequestsByLike('student_id', $student->g
                             </div>
                         <?php endforeach; ?>
                         <?php else: ?>
-                            <div class="alert alert-info">No Request has been sent yet</div>
+                            <div class="alert alert-info">No Pending Request has been sent yet</div>
                         <?php endif; ?>
                     </div>
                 </div>
