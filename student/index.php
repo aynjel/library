@@ -204,14 +204,26 @@ $title = ucwords(str_replace('-', ' ', $page));
     <script src="../assets/js/script.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#myDatePicker').datepicker({
-                beforeShowDay: function(date) {
-                var day = date.getDay();
-                return [(day >= 1 && day <= 5), ''];
-                }
-            });
-        });
+        // $(document).ready(function() {
+            // $('#myDatePicker').datepicker({
+            //     beforeShowDay: function(date) {
+            //     var day = date.getDay();
+            //     return [(day >= 1 && day <= 5), ''];
+            //     }
+            // });
+
+            // datepicker with time
+        //     $('#myDatePicker').datetimepicker({
+        //         format: 'DD/MM/YYYY HH:mm:ss',
+        //         minDate: new Date(),
+        //         maxDate: new Date(new Date().setDate(new Date().getDate() + 7)),
+        //         beforeShowDay: function(date) {
+        //             var day = date.getDay();
+        //             return [(day >= 1 && day <= 5), ''];
+        //         }
+        //     });
+
+        // });
     </script>
 </body>
 

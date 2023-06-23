@@ -73,7 +73,7 @@ $requests = $library_request->getLibraryPendingRequestsByLike('student_id', $stu
                         <form method="POST">
                             <div class="form-group">
                                 <label for="datetime">Date and Time</label>
-                                <input type="text" class="form-control" id="myDatePicker" name="datetime"
+                                <input type="datetime-local" class="form-control" name="datetime"
                                     placeholder="Enter date and time" value="">
                             </div>
                             <div class="form-group">
